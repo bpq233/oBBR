@@ -8,7 +8,7 @@ import numpy as np
 current_directory = os.path.dirname(os.path.abspath(__file__))
 out_dir=current_directory+'/../../figs/'
 fig_format = '.png'
-dir = current_directory+'/../../data/oBBR_fig4&5/'
+dir = current_directory+'/../../data/oBBR_fig4_5/'
 
 plt.rc('font', size = 20)
 plt.rc('figure', figsize = (6, 3.5))

@@ -1,10 +1,10 @@
 #!/bin/bash
 dev=lo
-bandwidth=(100 40 40 100 100 60 60 60)
-delay=(20 50 50 20 20 30 30 30)
-buffer=(125 125 125 125 125 90 180 270)
-loss=(1 0 1 0 2 0 0 0)
-cong=(BBRv2 oBBR BBR BBR-S B3R CUBIC BBRv2)
+bandwidth=(40 40 100 100 60 60 60)
+delay=(50 50 20 20 30 30 30)
+buffer=(125 125 125 125 90 180 270)
+loss=(0 1 0 2 0 0 0)
+cong=(oBBR BBR BBR-S B3R CUBIC BBRv2)
 obbr_u=(0.5 0.75 1.0)
 script_dir=$(dirname "$0")
 dir=$script_dir/../data/oBBR_fig7

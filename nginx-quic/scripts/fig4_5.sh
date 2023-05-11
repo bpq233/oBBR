@@ -1,7 +1,7 @@
 #!/bin/bash
 script_dir=$(dirname "$0")
 dev=lo
-dir='$script_dir/../data/oBBR_fig4&5'
+dir=$script_dir/../data/oBBR_fig4_5
 run_dir=$script_dir/../bin
 time=180
 
@@ -127,4 +127,4 @@ sudo pkill -P $pid2
 sleep 5
 echo 20-5Mbps done
 
-eval 'python3 $script_dir/plots/fig4&5.py'
+eval 'python3 $script_dir/plots/fig4_5.py'
