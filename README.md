@@ -98,7 +98,6 @@ mv ./objs/nginx ./bin/
 Before the experiment, you need to create a test file of `1G` size for data transfer.
 
 ```
-cd oBBR
 dd if=/dev/zero of=../nginx/html/test bs=1073741824 count=1
 dd if=/dev/zero of=../nginx1/html/test bs=1073741824 count=1
 ```
@@ -150,17 +149,17 @@ sudo ./scripts/fig10.sh
 **Command to run:**
 
 ```sh
-sudo ./scripts/fig10.sh 
+sudo ./scripts/fig3.sh 
 ```
 
 **Output:** The figures `fig3.a`, `fig3.b`, `fig3.c` will be plotted in the `oBBR/nginx-quic/figs`.
 
-### Figure 4&5 (About 15 mins)
+### Figure 4_5 (About 15 mins)
 
 **Command to run:**
 
 ```sh
-sudo ./scripts/fig10.sh 
+sudo ./scripts/fig4_5.sh 
 ```
 
 **Output:** The figures `fig4`, `fig5.a`, `fig5.b` and `fig5.c` will be plotted in the `oBBR/nginx-quic/figs`.
