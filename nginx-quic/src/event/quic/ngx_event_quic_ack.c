@@ -89,6 +89,9 @@ ngx_quic_handle_ack_frame(ngx_connection_t *c, ngx_quic_header_t *pkt,
     qc = ngx_quic_get_connection(c);
     ngx_quic_congestion_t  *cg = &qc->congestion;
 
+    cg->prior_delivered = cg->delivered;
+    cg->prior_in_flight = cg->in_flight;
+
     ctx = ngx_quic_get_send_ctx(qc, pkt->level);
 
     ngx_log_debug1(NGX_LOG_DEBUG_EVENT, c->log, 0,
@@ -207,8 +210,7 @@ ngx_quic_handle_ack_frame(ngx_connection_t *c, ngx_quic_header_t *pkt,
         }
         cg->window = ngx_min(NGX_QUIC_MAX_CWND, cg->cubic.cwnd);
     }
-    cg->prior_delivered = cg->delivered;
-    cg->prior_in_flight = cg->in_flight;
+    
     cg->sampler.prior_time = 0;
     
 
