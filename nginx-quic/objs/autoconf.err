@@ -201,7 +201,7 @@ cc -I../boringssl/include -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -o objs/autotest 
 ----------------------------------------
 checking for crypt()
 
-/usr/bin/ld: /tmp/cclAtNQt.o: in function `main':
+/usr/bin/ld: /tmp/ccj85TC9.o: in function `main':
 autotest.c:(.text+0x17): undefined reference to `crypt'
 collect2: error: ld returned 1 exit status
 ----------
@@ -315,7 +315,7 @@ checking for statvfs()
 ----------------------------------------
 checking for dlopen()
 
-/usr/bin/ld: /tmp/ccmYvDpp.o: in function `main':
+/usr/bin/ld: /tmp/ccnvGU94.o: in function `main':
 autotest.c:(.text+0x13): undefined reference to `dlopen'
 /usr/bin/ld: autotest.c:(.text+0x24): undefined reference to `dlsym'
 collect2: error: ld returned 1 exit status
@@ -608,7 +608,7 @@ objs/autotest.c: In function 'main':
 objs/autotest.c:7:5: warning: implicit declaration of function 'setproctitle' [-Wimplicit-function-declaration]
     7 |     setproctitle("test");;
       |     ^~~~~~~~~~~~
-/usr/bin/ld: /tmp/ccJ5Ie5q.o: in function `main':
+/usr/bin/ld: /tmp/ccyVBbD7.o: in function `main':
 autotest.c:(.text+0x15): undefined reference to `setproctitle'
 collect2: error: ld returned 1 exit status
 ----------
@@ -648,7 +648,7 @@ objs/autotest.c:7:18: warning: implicit declaration of function 'strerrordesc_np
 objs/autotest.c:7:16: warning: assignment to 'char *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
     7 |     char *p; p = strerrordesc_np(0);
       |                ^
-/usr/bin/ld: /tmp/ccOlQADo.o: in function `main':
+/usr/bin/ld: /tmp/ccyoY5g3.o: in function `main':
 autotest.c:(.text+0x17): undefined reference to `strerrordesc_np'
 collect2: error: ld returned 1 exit status
 ----------
@@ -670,7 +670,7 @@ cc -I../boringssl/include -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -o objs/autotest 
 ----------------------------------------
 checking for sys_nerr
 
-/usr/bin/ld: /tmp/ccnNTmTo.o: in function `main':
+/usr/bin/ld: /tmp/ccsan9z2.o: in function `main':
 autotest.c:(.text+0xa): warning: `sys_nerr' is deprecated; use `strerror' or `strerror_r' instead
 135
 ----------------------------------------
@@ -704,7 +704,7 @@ checking for System V shared memory
 ----------------------------------------
 checking for POSIX semaphores
 
-/usr/bin/ld: /tmp/ccvIkLHW.o: in function `main':
+/usr/bin/ld: /tmp/ccBkTbqC.o: in function `main':
 autotest.c:(.text+0x2d): undefined reference to `sem_init'
 /usr/bin/ld: autotest.c:(.text+0x45): undefined reference to `sem_destroy'
 collect2: error: ld returned 1 exit status
