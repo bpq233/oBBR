@@ -114,6 +114,8 @@ sudo ./scripts/fig7.sh
 
 **Output:** `./data/oBBR_fig7` includes the data of retransmission ratio ` (Fig7.a)` and good-put `(Fig7.b)` of  different `CCAs` (congestion control algorithms) in stable Network Environment. The figures will be plotted in the `oBBR/nginx-quic/figs.`
 
+**Expected results:** `oBBR` reduces a lot of retransmissions compared to `BBR`, and although it is still higher than `Cubic` and `BBRv2`, it is more resistant to packet loss and has higher throughput in packet loss scenarios.
+
 ### Figure 8 (About 15 mins)
 
 **Command to run:**
@@ -123,6 +125,8 @@ sudo ./scripts/fig8.sh
 ```
 
 **Output:** `./data/oBBR_fig8` includes the data of bandwidth convergence rate `(Fig8.a)`, `RTT` change `(Fig8.b)`, retransmissions `(Fig8.c)` and good-put `(Fig8.d)` of  `BBR` and `oBBR` in  variable bandwidth Network Environment. The figures will be plotted in the `oBBR/nginx-quic/figs`.
+
+**Expected results:** In case of bandwidth degradation, `oBBR` can react more promptly than `BBR`, reducing retransmissions with the same good-put as `BBR`.
 
 ### Figure 9 (About 4 hours)
 
@@ -134,7 +138,11 @@ sudo ./scripts/fig9.sh
 
 **Output:** `./data/oBBR_fig9` includes the data of retransmission ratio and good-put of  different `CCAs` in  Realistic Network Traces Environment. The figures `fig9.a`, `fig9.b`, `fig9.c`, `fig9.d` will be plotted in the `oBBR/nginx-quic/figs`.
 
-### Figure 10 (About 80 mins)
+**Expected results:** `oBBR` reduces the retransmission rate of `BBR`, but is still higher than `Cubic` and `BBRv2`. However, `Cubic` and `BBRv2` do not respond to bandwidth-variant scenarios in a timely manner and have lower good-put than `oBBR` . In general `oBBR` reduces retransmissions without affecting good-put.
+
+### Other Figures
+
+#### Figure 10 (About 80 mins)
 
 **Command to run:**
 
@@ -144,7 +152,7 @@ sudo ./scripts/fig10.sh
 
 **Output:** The Competitiveness of `oBBR`. The `fig10` will be plotted in the `oBBR/nginx-quic/figs`.
 
-### Figure 3 (About 90 mins)
+#### Figure 3 (About 90 mins)
 
 **Command to run:**
 
@@ -154,7 +162,7 @@ sudo ./scripts/fig3.sh
 
 **Output:** The figures `fig3.a`, `fig3.b`, `fig3.c` will be plotted in the `oBBR/nginx-quic/figs`.
 
-### Figure 4_5 (About 15 mins)
+#### Figure 4_5 (About 15 mins)
 
 **Command to run:**
 
