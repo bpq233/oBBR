@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "ngx_core.h": "c",
+        "ngx_event_quic_socket.h": "c"
+    }
+}

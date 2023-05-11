@@ -1,0 +1,18 @@
+{
+    "files.associations": {
+        "ngx_config.h": "c",
+        "ngx_http.h": "c",
+        "ngx_core.h": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "ngx_event_quic_connection.h": "c",
+        "ngx_event_quic_ack.h": "c",
+        "ngx_event_quic_streams.h": "c",
+        "stdbool.h": "c",
+        "ngx_event_quic_socket.h": "c",
+        "ngx_window_filter.h": "c",
+        "ngx_event_quic_tokens.h": "c",
+        "ngx_event_quic_migration.h": "c"
+    }
+}

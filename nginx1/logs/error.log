@@ -1,0 +1,114 @@
+2022/03/14 23:24:30 [emerg] 2252769#0: duplicate location "/" in /home/bpq/NginxWithQuic/nginx/conf/nginx.conf:61
+2022/03/14 23:25:22 [emerg] 2252784#0: bind() to 0.0.0.0:80 failed (13: Permission denied)
+2022/03/14 23:27:11 [error] 2252810#0: *1 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/14 23:38:29 [error] 2252810#0: *9 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/14 23:38:29 [error] 2252810#0: *8 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/14 23:39:45 [notice] 2253333#0: signal process started
+2022/03/14 23:40:51 [error] 2253339#0: *4 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/14 23:44:27 [error] 2253339#0: *5 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/14 23:49:43 [error] 2253339#0: *8 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/14 23:49:43 [error] 2253339#0: *8 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/14 23:52:10 [error] 2253339#0: *14 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn", referrer: "http://app1090.acapp.acwing.com.cn/"
+2022/03/15 00:06:38 [notice] 2254244#0: signal process started
+2022/03/15 00:09:59 [error] 2254245#0: *26 directory index of "/home/bpq/NginxWithQuic/nginx/html/demo/" is forbidden, client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /demo/ HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443"
+2022/03/15 00:10:35 [error] 2254245#0: *26 "/home/bpq/NginxWithQuic/nginx/html/index.html/index.html" is not found (20: Not a directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /index.html/ HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443"
+2022/03/15 00:10:41 [error] 2254245#0: *26 "/home/bpq/NginxWithQuic/nginx/html/index.html/index.html" is not found (20: Not a directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /index.html/ HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443"
+2022/03/15 00:10:51 [error] 2254245#0: *26 "/home/bpq/NginxWithQuic/nginx/html/index.html/index.html" is not found (20: Not a directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /index.html/ HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443"
+2022/03/15 00:15:02 [notice] 2254425#0: signal process started
+2022/03/15 00:40:27 [error] 2254426#0: *37 open() "/home/bpq/NginxWithQuic/nginx/html/demo/input_video_1280x720_1500k_dash157.m4s" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /demo/input_video_1280x720_1500k_dash157.m4s HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "http://localhost:3000/"
+2022/03/15 00:40:28 [error] 2254426#0: *37 open() "/home/bpq/NginxWithQuic/nginx/html/demo/input_video_1280x720_1500k_dash157.m4s" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /demo/input_video_1280x720_1500k_dash157.m4s HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "http://localhost:3000/"
+2022/03/15 00:40:29 [error] 2254426#0: *37 open() "/home/bpq/NginxWithQuic/nginx/html/demo/input_video_1280x720_1500k_dash157.m4s" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /demo/input_video_1280x720_1500k_dash157.m4s HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "http://localhost:3000/"
+2022/03/15 00:40:31 [error] 2254426#0: *37 open() "/home/bpq/NginxWithQuic/nginx/html/demo/input_video_1280x720_1500k_dash157.m4s" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /demo/input_video_1280x720_1500k_dash157.m4s HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "http://localhost:3000/"
+2022/03/15 00:46:58 [error] 2254426#0: *39 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/15 00:48:04 [notice] 2255120#0: signal process started
+2022/03/15 00:49:28 [error] 2255121#0: *42 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/15 00:49:28 [error] 2255121#0: *43 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/15 00:53:24 [notice] 2255177#0: signal process started
+2022/03/15 00:57:02 [notice] 2255213#0: signal process started
+2022/03/15 00:57:59 [notice] 2255228#0: signal process started
+2022/03/15 00:59:33 [notice] 2255248#0: signal process started
+2022/03/15 01:04:16 [error] 2255249#0: *45 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/15 01:12:21 [notice] 2257030#0: signal process started
+2022/03/15 01:24:56 [notice] 2259252#0: signal process started
+2022/03/15 01:45:25 [error] 2262628#0: *1 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/15 01:56:36 [error] 2262628#0: *2 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.7, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/15 11:45:45 [error] 2262628#0: *3 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 58.194.165.187, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/15 11:49:21 [notice] 2423650#0: signal process started
+2022/03/15 11:50:13 [error] 2423812#0: *2 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 58.194.165.187, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/15 19:16:07 [notice] 2543608#0: signal process started
+2022/03/15 19:16:07 [alert] 2543608#0: kill(2423811, 1) failed (1: Operation not permitted)
+2022/03/15 19:16:31 [notice] 2543642#0: signal process started
+2022/03/15 19:18:09 [error] 2543643#0: *4 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.18.151, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/15 19:29:56 [notice] 2544688#0: signal process started
+2022/03/15 20:21:36 [notice] 2548698#0: signal process started
+2022/03/15 20:31:21 [error] 2548699#0: *4 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.18.151, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "test.mydomain.com", referrer: "https://test.mydomain.com/"
+2022/03/15 20:33:39 [error] 2548699#0: *11 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.18.151, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "test.mydomain.com", referrer: "https://test.mydomain.com/"
+2022/03/15 20:33:41 [error] 2548699#0: *14 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.18.151, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "test.mydomain.com", referrer: "https://test.mydomain.com/"
+2022/03/15 20:34:50 [error] 2548699#0: *17 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.18.151, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "test.mydomain.com", referrer: "https://test.mydomain.com/"
+2022/03/16 07:28:34 [error] 2548699#0: *30 open() "/home/bpq/NginxWithQuic/nginx/html/onvif/device_service" failed (2: No such file or directory), client: 10.1.2.175, server: app1090.acapp.acwing.com.cn, request: "POST /onvif/device_service HTTP/1.1", host: "10.102.32.223"
+2022/03/17 00:10:00 [notice] 2647292#0: signal process started
+2022/03/17 10:20:50 [notice] 2657447#0: signal process started
+2022/03/17 10:20:50 [error] 2657447#0: open() "/home/bpq/NginxWithQuic/nginx/logs/nginx.pid" failed (2: No such file or directory)
+2022/03/17 10:22:26 [notice] 2657586#0: signal process started
+2022/03/17 10:22:26 [error] 2657586#0: open() "/home/bpq/NginxWithQuic/nginx/logs/nginx.pid" failed (2: No such file or directory)
+2022/03/17 12:08:38 [notice] 2658972#0: signal process started
+2022/03/17 12:08:38 [error] 2658972#0: open() "/home/bpq/NginxWithQuic/nginx/logs/nginx.pid" failed (2: No such file or directory)
+2022/03/17 12:10:58 [notice] 2659166#0: signal process started
+2022/03/17 12:12:02 [notice] 2659522#0: signal process started
+2022/03/17 12:12:30 [error] 2659523#0: *1 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.233, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/17 12:13:39 [notice] 2660048#0: signal process started
+2022/03/17 12:16:57 [notice] 2660668#0: signal process started
+2022/03/17 12:17:56 [notice] 2660868#0: signal process started
+2022/03/17 12:21:42 [notice] 2661419#0: signal process started
+2022/03/17 12:24:18 [notice] 2661618#0: signal process started
+2022/03/17 12:25:22 [error] 2661619#0: *13 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.233, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn:8443", referrer: "https://app1090.acapp.acwing.com.cn:8443/"
+2022/03/17 12:34:33 [notice] 2662713#0: signal process started
+2022/03/17 12:35:31 [notice] 2662787#0: signal process started
+2022/03/17 12:39:48 [notice] 2663646#0: signal process started
+2022/03/17 12:42:41 [notice] 2664243#0: signal process started
+2022/03/17 12:43:08 [error] 2664244#0: *4 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.233, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "app1090.acapp.acwing.com.cn", referrer: "https://app1090.acapp.acwing.com.cn/"
+2022/03/17 13:06:04 [notice] 2668502#0: signal process started
+2022/03/17 13:06:40 [notice] 2668563#0: signal process started
+2022/03/17 17:39:25 [notice] 2701555#0: signal process started
+2022/03/18 13:07:55 [error] 2701556#0: *22 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.25.141.143, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "10.102.32.223"
+2022/03/18 13:34:10 [error] 2701556#0: *23 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.25.141.143, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "10.102.32.223"
+2022/03/18 13:42:59 [error] 2701556#0: *24 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.25.141.143, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "10.102.32.223"
+2022/03/18 20:00:43 [error] 2701556#0: *28 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.25.141.143, server: app1090.acapp.acwing.com.cn, request: "GET /favicon.ico HTTP/1.1", host: "10.102.32.223"
+2022/03/20 21:42:45 [notice] 3442546#0: signal process started
+2022/03/20 21:44:48 [emerg] 3442616#0: cannot load certificate "/home/bpq/ssl/test.bpqiang.cloud_bundle.crt": BIO_new_file() failed (SSL: error:02000002:system library:OPENSSL_internal:No such file or directory:fopen('/home/bpq/ssl/test.bpqiang.cloud_bundle.crt','r') error:1100006e:BIO routines:OPENSSL_internal:NO_SUCH_FILE)
+2022/03/20 21:49:06 [notice] 3442672#0: signal process started
+2022/03/20 21:49:09 [notice] 3442675#0: signal process started
+2022/03/20 21:56:21 [error] 3442679#0: *1 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.17, server: test.bpqiang.cloud, request: "GET /favicon.ico HTTP/1.1", host: "test.bpqiang.cloud", referrer: "https://test.bpqiang.cloud/"
+2022/03/20 21:57:33 [error] 3442679#0: *2 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 202.194.12.17, server: test.bpqiang.cloud, request: "GET /favicon.ico HTTP/1.1", host: "test.bpqiang.cloud", referrer: "https://test.bpqiang.cloud/"
+2022/03/21 14:04:28 [notice] 3467556#0: signal process started
+2022/03/21 19:15:49 [notice] 3588353#0: signal process started
+2022/03/21 19:15:49 [error] 3588353#0: open() "/home/bpq/NginxWithQuic/nginx/logs/nginx.pid" failed (2: No such file or directory)
+2022/03/21 19:20:25 [error] 3590976#0: *8 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 10.102.32.223, server: test.bpqiang.cloud, request: "GET /favicon.ico HTTP/3.0", referrer: "https://test.bpqiang.cloud/"
+2022/03/21 19:21:42 [notice] 3592203#0: signal process started
+2022/03/29 14:50:19 [emerg] 2474505#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2022/03/29 14:50:19 [emerg] 2474505#0: bind() to 0.0.0.0:443 failed (98: Address already in use)
+2022/03/29 14:50:19 [emerg] 2474505#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2022/03/29 14:50:19 [emerg] 2474505#0: bind() to 0.0.0.0:443 failed (98: Address already in use)
+2022/03/29 14:50:19 [emerg] 2474505#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2022/03/29 14:50:19 [emerg] 2474505#0: bind() to 0.0.0.0:443 failed (98: Address already in use)
+2022/03/29 14:50:19 [emerg] 2474505#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2022/03/29 14:50:19 [emerg] 2474505#0: bind() to 0.0.0.0:443 failed (98: Address already in use)
+2022/03/29 14:51:20 [notice] 2474585#0: signal process started
+2022/03/29 14:51:20 [error] 2474585#0: open() "/home/bpq/NginxWithQuic/nginx/logs/nginx.pid" failed (2: No such file or directory)
+2022/03/29 14:51:40 [notice] 2474619#0: signal process started
+2022/03/29 14:51:40 [error] 2474619#0: open() "/home/bpq/NginxWithQuic/nginx/logs/nginx.pid" failed (2: No such file or directory)
+2022/03/29 14:52:59 [notice] 2474730#0: signal process started
+2022/03/29 14:52:59 [error] 2474730#0: open() "/home/bpq/NginxWithQuic/nginx/logs/nginx.pid" failed (2: No such file or directory)
+2022/09/27 21:15:11 [emerg] 1470285#0: bind() to 0.0.0.0:80 failed (13: Permission denied)
+2022/09/27 21:16:54 [error] 1470295#0: *7 open() "/home/bpq/NginxWithQuic/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.25.171.232, server: test.bpqiang.cloud, request: "GET /favicon.ico HTTP/3.0", referrer: "https://test.bpqiang.cloud/"
+2022/09/27 21:19:26 [emerg] 1470347#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2022/09/27 21:19:26 [emerg] 1470347#0: bind() to 0.0.0.0:443 failed (98: Address already in use)
+2022/09/27 21:19:26 [emerg] 1470347#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2022/09/27 21:19:26 [emerg] 1470347#0: bind() to 0.0.0.0:443 failed (98: Address already in use)
+2022/09/27 21:19:26 [emerg] 1470347#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2022/09/27 21:19:26 [emerg] 1470347#0: bind() to 0.0.0.0:443 failed (98: Address already in use)
+2022/09/27 21:19:26 [emerg] 1470347#0: bind() to 0.0.0.0:80 failed (98: Address already in use)
+2022/09/27 21:19:26 [emerg] 1470347#0: bind() to 0.0.0.0:443 failed (98: Address already in use)
+2022/09/27 21:25:27 [emerg] 1470495#0: unknown directive "deamom" in /home/bpq/NginxWithQuic/nginx/conf/nginx.conf:1
+2022/09/27 21:25:47 [emerg] 1470501#0: unknown directive "deamon" in /home/bpq/NginxWithQuic/nginx/conf/nginx.conf:1
+2022/10/27 10:23:15 [emerg] 38265#0: cannot load certificate "/home/bpq/ssl/test.bpqiang.cloud_nginx/test.bpqiang.cloud_bundle.crt": BIO_new_file() failed (SSL: error:02000002:system library:OPENSSL_internal:No such file or directory:fopen('/home/bpq/ssl/test.bpqiang.cloud_nginx/test.bpqiang.cloud_bundle.crt','r') error:1100006e:BIO routines:OPENSSL_internal:NO_SUCH_FILE)
