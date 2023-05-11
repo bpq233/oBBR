@@ -40,7 +40,7 @@ sudo apt install -y \
     lrzsz unzip \
     libnss3-dev
     
-pip install statsmodels pandas numpy matplotlib
+sudo pip install statsmodels pandas numpy matplotlib
 ```
 
 ### Build
@@ -88,7 +88,7 @@ mv ./objs/nginx ./bin/
 |-- plots           # plot the experimental figures
 |-- clean.sh        # Cleaning process
 |-- fig3.sh         # bbr vs cubic (Sec3.1)
-|-- fig4&5.sh       # bandwidth drop (Sec3.2 Sec4.2)
+|-- fig4_5.sh       # bandwidth drop (Sec3.2 Sec4.2)
 |-- fig7.sh         # stable Network Environment (Sec5.2.1)
 |-- fig8.sh         # variable Bandwidth (Sec5.2.2)
 |-- fig9.sh         # Realistic Network Traces (Sec5.2.3)
