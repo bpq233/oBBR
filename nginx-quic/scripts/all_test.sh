@@ -6,7 +6,9 @@ clean() {
     exit 0
 }
 
-trap clean EXIT
+trap cleanup EXIT
+trap cleanup SIGTERM
+trap cleanup SIGINT
 
 start_time=$(date +%s)
 sudo ./scripts/fig7.sh
