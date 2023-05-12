@@ -29,6 +29,8 @@ trap cleanup EXIT
 trap cleanup SIGTERM
 trap cleanup SIGINT
 
+echo ========== Fig9 experiment ==========
+
 for trace in "${traces[@]}"
 do
     echo ======trace: $trace======

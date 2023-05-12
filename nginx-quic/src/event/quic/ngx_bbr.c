@@ -341,7 +341,7 @@ ngx_bbr_update_bandwidth(ngx_bbr_t *bbr, ngx_sample_t *sampler, ngx_quic_congest
                                    bbr->round_cnt, sampler->rtt);
 
     if (out_rf && !sampler->is_app_limited && bbr->mode == BBR_PROBE_BW) {
-        fprintf(r_fp, "%ld,%d,%d,%.5f,%ld,%ld,%.5f,%ld\n",ngx_current_msec - cg->start_time, bandwidth * 8, ngx_bbr_max_bw(bbr), bandwidth * 1.0 / ngx_bbr_max_bw(bbr), sampler->rtt,ngx_min(bbr->min_rtt,sampler->rtt),sampler->rtt * 1.0 / bbr->min_rtt,cg->in_flight);
+        fprintf(r_fp, "%ld,%d,%d,%.5f,%ld,%ld,%.5f,%ld\n",ngx_current_msec - cg->start_time, bandwidth * 8, ngx_bbr_max_bw(bbr), bandwidth * 1.0 / ngx_bbr_max_bw(bbr), sampler->rtt,ngx_min(bbr->min_rtt,sampler->rtt),sampler->rtt * 1.0 / ngx_min(bbr->min_rtt,sampler->rtt),cg->in_flight);
     }
     
     if (ngx_strcmp(ngx_cong, "BBR-S") == 0 && bbr->mode == BBR_PROBE_BW) {

@@ -34,6 +34,8 @@ trap cleanup EXIT
 trap cleanup SIGTERM
 trap cleanup SIGINT
 
+echo ========== Fig7 experiment ==========
+
 for i in $(seq 0 `expr $len - 1`)
 do
     sudo tc qdisc change dev $dev root handle 1:0 netem delay ${delay[i]}ms loss ${loss[i]}%

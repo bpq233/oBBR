@@ -35,6 +35,8 @@ trap cleanup EXIT
 trap cleanup SIGTERM
 trap cleanup SIGINT
 
+echo ========== Fig10 experiment ==========
+
 for buf in "${buffer[@]}"
 do
     sudo tc qdisc change dev $dev parent 1:1 handle 10: tbf rate ${bandwidth}Mbit burst 100KB limit ${buf}KB
@@ -56,7 +58,7 @@ do
             eval 'sudo timeout ${time}s ${run_dir}/quic_client https://test.bpqiang.cloud:441/test > /dev/null 2>&1' &
 
             sleep `expr $time + $t`
-            echo  ${obbr_u[j]}_vs_${cong[i]}_${buf}: done
+            echo  oBBR-${obbr_u[j]}_vs_${cong[i]}_${buf}: done
 
         done
         

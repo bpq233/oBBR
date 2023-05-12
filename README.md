@@ -86,13 +86,14 @@ mv ./objs/nginx ./bin/
 ```sh
 |-- nets            # set up the network
 |-- plots           # plot the experimental figures
-|-- clean.sh        # Cleaning process
+|-- all_test.sh     # run all experiments
+|-- clean.sh        # cleaning process
 |-- fig3.sh         # bbr vs cubic (Sec3.1)
 |-- fig4_5.sh       # bandwidth drop (Sec3.2 Sec4.2)
 |-- fig7.sh         # stable Network Environment (Sec5.2.1)
 |-- fig8.sh         # variable Bandwidth (Sec5.2.2)
-|-- fig9.sh         # Realistic Network Traces (Sec5.2.3)
-|-- fig10.sh        # Competitiveness (Sec5.2.4)
+|-- fig9.sh         # realistic Network Traces (Sec5.2.3)
+|-- fig10.sh        # competitiveness (Sec5.2.4)
 ```
 
 Before the experiment, you need to create a test file of `1G` size for data transfer.
@@ -103,6 +104,14 @@ dd if=/dev/zero of=../nginx1/html/test bs=1073741824 count=1
 ```
 
 **Note:** Running script for experiment will create multiple servers and clients, which will all stop after the experiment has finished running normally. If you find residual processes that are not stopped after the script ends abnormally, you can run `./clean.sh` to kill them.
+
+**Command to run all experiments (About 11 hours):**
+
+```sh
+sudo ./scripts/all_test.sh  
+```
+
+**Or you can run a single experiment by following steps**
 
 ### Figure 7 (About 3 hours)
 
@@ -128,7 +137,7 @@ sudo ./scripts/fig8.sh
 
 **Expected results:** In case of bandwidth degradation, `oBBR` can react more promptly than `BBR`, reducing retransmissions with the same good-put as `BBR`.
 
-### Figure 9 (About 4 hours)
+### Figure 9 (About 4.5 hours)
 
 **Command to run:**
 
@@ -162,7 +171,7 @@ sudo ./scripts/fig3.sh
 
 **Output:** The figures `fig3.a`, `fig3.b`, `fig3.c` will be plotted in the `oBBR/nginx-quic/figs`.
 
-#### Figure 4_5 (About 15 mins)
+#### Figure 4_5 (About 10 mins)
 
 **Command to run:**
 

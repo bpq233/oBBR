@@ -32,6 +32,8 @@ trap cleanup EXIT
 trap cleanup SIGTERM
 trap cleanup SIGINT
 
+echo ========== Fig3 experiment ==========
+
 for buf in "${buffer[@]}"
 do 
     sudo tc qdisc change dev $dev parent 1:1 handle 10: tbf rate ${bandwidth}Mbit burst 100KB limit ${buf}KB

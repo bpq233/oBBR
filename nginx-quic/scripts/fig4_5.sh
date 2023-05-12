@@ -26,6 +26,7 @@ trap cleanup EXIT
 trap cleanup SIGTERM
 trap cleanup SIGINT
 
+echo ========== Fig4_5 experiment ==========
 
 pwd1=$dir/L_20-5Mbps
 pwd2=$dir/L_20-5Mbps_rtt

@@ -26,6 +26,8 @@ trap cleanup EXIT
 trap cleanup SIGTERM
 trap cleanup SIGINT
 
+echo ========== Fig8 experiment ==========
+
 for con in "${cong[@]}"
 do
     pwd1=$dir/${con}
