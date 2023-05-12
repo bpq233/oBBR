@@ -31,7 +31,7 @@ for file in files:
         slen = 0
         max_len=0
         for i in range(len(bw_ratios)):
-            if (bw_ratios[i] < x):
+            if (bw_ratios[i] <= x):
                 slen=slen+1
             else:
                 slen=0
