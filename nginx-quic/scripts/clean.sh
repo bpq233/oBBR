@@ -1,4 +1,5 @@
 #!/bin/bash
+dev=lo
 script_dir=$(dirname "$0")
 
 check_and_kill_process() {

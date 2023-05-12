@@ -1,3 +1,5 @@
+script_dir=$(dirname "$0")
+dev=lo
 clean() {
     sudo pkill -f $script_dir/nets/
     sudo pkill -f test/nginx
