@@ -145,11 +145,11 @@ typedef struct ngx_bbr_s {
 void 
 ngx_bbr_init(ngx_bbr_t *bbr, ngx_sample_t *sampler);
 
-int f_size;
-float loss_rtt;
-int rate;
-int rank;
+// int f_size;
+// float loss_rtt;
+// int rate;
+// int rank;
 
-Loss_Filter *loss_filter;
+// Loss_Filter *loss_filter;
 
 #endif

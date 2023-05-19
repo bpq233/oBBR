@@ -140,7 +140,7 @@ ngx_bbr_init(ngx_bbr_t *bbr, ngx_sample_t *sampler)
 
 
     init_Loss_Filter(&bbr->loss_filter);
-    loss_filter = &bbr->loss_filter;
+    //loss_filter = &bbr->loss_filter;
     ngx_bbr_enter_startup(bbr);
     ngx_bbr_init_pacing_rate(bbr, sampler);
 
@@ -173,7 +173,7 @@ ngx_bbr_max_bw(ngx_bbr_t *bbr)
     //     c_cwnd = true;
     //     start_time = ngx_current_msec;
     // }
-    rate = bbr->bw;
+    // rate = bbr->bw;
     return bbr->bw;
 }
 
@@ -283,9 +283,9 @@ ngx_bbr_update_bandwidth(ngx_bbr_t *bbr, ngx_sample_t *sampler, ngx_quic_congest
         bbr->packet_conservation = 0;
         if (bbr->send_rtt > 0) {
             //float loss_ = bbr->resend_rtt * 1.0 / bbr->send_rtt;
-            if (bbr->resend_rtt < bbr->send_rtt) {
-                insertLoss(&bbr->loss_filter, bbr->resend_rtt);
-            }
+            // if (bbr->resend_rtt < bbr->send_rtt) {
+            //     insertLoss(&bbr->loss_filter, bbr->resend_rtt);
+            // }
             bbr->send_rtt = 0;
             bbr->resend_rtt = 0;
         }

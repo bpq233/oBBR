@@ -960,8 +960,8 @@ done:
     //     d = c;
     // }
     // printf("%d %d\n",c,data[c]);
-    extern int f_size;
-    f_size = of->size;
+    // extern int f_size;
+    // f_size = of->size;
     return NGX_OK;
 }
 

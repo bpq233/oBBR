@@ -386,10 +386,10 @@ ngx_quic_congestion_ack(ngx_connection_t *c, ngx_quic_frame_t *f)
     //cg->send += f->plen;
     //cg->send_s += f->plen;
 
-    extern float loss_rtt;
-    extern int rank;
-    loss_rtt = cg->resend_s * 1.0 / cg->send_s;
-    rank = Loss_Rank(&cg->bbr.loss_filter, cg->bbr.resend_rtt);
+    // extern float loss_rtt;
+    // extern int rank;
+    // loss_rtt = cg->resend_s * 1.0 / cg->send_s;
+    // rank = Loss_Rank(&cg->bbr.loss_filter, cg->bbr.resend_rtt);
 
 
     blocked = (cg->in_flight >= cg->window) ? 1 : 0;

@@ -184,10 +184,10 @@ ngx_quic_create_datagrams(ngx_connection_t *c)
         //     printf("\n");
         // }
 
-        if (cg->send_s < 2000) {
-            loss_rtt = 0;
-            rank = 100;
-        }
+        // if (cg->send_s < 2000) {
+        //     loss_rtt = 0;
+        //     rank = 100;
+        // }
 
         cg->timer = ngx_current_msec + 1000;
         cg->send_s = 0;
@@ -340,7 +340,7 @@ ngx_quic_commit_send(ngx_connection_t *c, ngx_quic_send_ctx_t *ctx)
 
             if (f->is_resend) {
                 cg->resend += f->plen;
-                 cg->resend_s += f->plen;
+                cg->resend_s += f->plen;
             //     cg->bbr.resend_rtt += f->plen;
             } 
 

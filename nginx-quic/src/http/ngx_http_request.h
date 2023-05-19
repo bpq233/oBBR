@@ -625,8 +625,8 @@ extern ngx_http_header_out_t   ngx_http_headers_out[];
 
 
 
-volatile ngx_str_t  s_Args;
-int buffer;
+// volatile ngx_str_t  s_Args;
+// int buffer;
 
 
 #endif /* _NGX_HTTP_REQUEST_H_INCLUDED_ */

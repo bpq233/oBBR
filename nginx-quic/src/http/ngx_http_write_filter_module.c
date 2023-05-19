@@ -261,48 +261,48 @@ ngx_http_write_filter(ngx_http_request_t *r, ngx_chain_t *in)
         r->limit_rate_set = 1;
     }
 
-    int USE_LOSS = 0;
-    if (USE_LOSS) {
-        //printf("----------\n");
-        extern int f_size, buffer;
-        extern float loss_rtt;
-        extern int rate;
-        int backup_rate = rate;
-        extern int rank;
-        // r->limit_rate = rate;
-        // if (r->limit_rate == 0) {
-        //     r->limit_rate = 1000000;
-        // }
-        u_int64_t _rate = 0;
-        if (loss_rtt > 0.001 && (buffer > 10 || buffer == 0)) {
-            int rate1 = 0;
-            if (buffer > 10) {
-                rate1 = ngx_max((f_size + buffer - 9) / (buffer - 10), backup_rate / 2);
-            } else {
-                rate1 = backup_rate / 2;
-            }
-            backup_rate -= rate1;
-            if (backup_rate > 0) {
-                float c = ngx_min(loss_rtt * 10, 1.0);
-                float l = 0.01, r = 1;
-                while(r - l > 1e-6) {
-                    float mid = (l + r) / 2;
-                    if (mid * mid < c) l = mid;
-                    else r = mid;
-                }
-                float p = l;
-                _rate = p * backup_rate * (rank * 1.0 / 100) + (1 - p) * backup_rate + rate1;
-                //printf("%f\n", p);
-            } else {
-                _rate = rate * 1.25;
-            } 
-        }
-        else {
-            _rate = rate * 1.25;
-        }
+    // int USE_LOSS = 0;
+    // if (USE_LOSS) {
+    //     //printf("----------\n");
+    //     extern int f_size, buffer;
+    //     extern float loss_rtt;
+    //     extern int rate;
+    //     int backup_rate = rate;
+    //     extern int rank;
+    //     // r->limit_rate = rate;
+    //     // if (r->limit_rate == 0) {
+    //     //     r->limit_rate = 1000000;
+    //     // }
+    //     u_int64_t _rate = 0;
+    //     if (loss_rtt > 0.001 && (buffer > 10 || buffer == 0)) {
+    //         int rate1 = 0;
+    //         if (buffer > 10) {
+    //             rate1 = ngx_max((f_size + buffer - 9) / (buffer - 10), backup_rate / 2);
+    //         } else {
+    //             rate1 = backup_rate / 2;
+    //         }
+    //         backup_rate -= rate1;
+    //         if (backup_rate > 0) {
+    //             float c = ngx_min(loss_rtt * 10, 1.0);
+    //             float l = 0.01, r = 1;
+    //             while(r - l > 1e-6) {
+    //                 float mid = (l + r) / 2;
+    //                 if (mid * mid < c) l = mid;
+    //                 else r = mid;
+    //             }
+    //             float p = l;
+    //             _rate = p * backup_rate * (rank * 1.0 / 100) + (1 - p) * backup_rate + rate1;
+    //             //printf("%f\n", p);
+    //         } else {
+    //             _rate = rate * 1.25;
+    //         } 
+    //     }
+    //     else {
+    //         _rate = rate * 1.25;
+    //     }
 
-        r->limit_rate = ngx_max(_rate, 100000);
-    }
+    //     r->limit_rate = ngx_max(_rate, 100000);
+    // }
 
 
 
