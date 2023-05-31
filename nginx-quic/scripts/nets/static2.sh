@@ -15,8 +15,8 @@ i=8
 dev=lo
 while true
 do
-	sudo tc qdisc change dev $dev root handle 1:0 netem delay ${delay[$i]}ms loss 0%
-	sudo tc qdisc change dev $dev parent 1:1 handle 10: tbf rate ${BW[$i]}Kbit burst 100K limit 297KB
+	tc qdisc change dev $dev root handle 1:0 netem delay ${delay[$i]}ms loss 0%
+	tc qdisc change dev $dev parent 1:1 handle 10: tbf rate ${BW[$i]}Kbit burst 100K limit 302KB
 	
 	i=`expr \( $i + 1 \) \% ${#delay[@]}`
 	sleep 1
