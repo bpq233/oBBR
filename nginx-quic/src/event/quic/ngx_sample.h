@@ -28,6 +28,7 @@ typedef struct ngx_sample_s {
     /* whether packet loss */
     uint32_t         loss;
     uint64_t         total_acked;
+    uint64_t         total_loss;
     ngx_msec_t       srtt;
     ngx_msec_t       min_rtt;
     /* used to determine if generate_sample needs to be called */

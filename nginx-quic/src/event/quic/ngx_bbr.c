@@ -10,9 +10,8 @@
 
 #define BBR_U 0.5
 
-//#define OBBR_C 1
 
-#define NGX_BBR_MAX_DATAGRAMSIZE    1500
+#define NGX_BBR_MAX_DATAGRAMSIZE    NGX_QUIC_MSS
 #define NGX_BBR_MIN_WINDOW          (4 * NGX_BBR_MAX_DATAGRAMSIZE)
 
 
@@ -23,13 +22,9 @@
 
 
 /* Cycle of gains in PROBE_BW for pacing rate */
-#if OBBR_C
-float ngx_bbr_pacing_gain[] = {1.25, 1.01, 0.75, 1, 1, 1, 1, 1, 1, 1};
-#define NGX_BBR_CYCLE_LENGTH    10
-#else
+
 float ngx_bbr_pacing_gain[] = {1.25, 0.75, 1, 1, 1, 1, 1, 1};
 #define NGX_BBR_CYCLE_LENGTH    8
-#endif
 
 
 
@@ -46,6 +41,8 @@ const float ngx_bbr_high_gain = 2.885;
 const float ngx_bbr_drain_gain = 1.0 / 2.885;
 /* Gain for cwnd in probe_bw, like slow start*/
 double ngx_bbr_cwnd_gain = 2;
+const double max_ngx_bbr_cwnd_gain = 2.05;
+const uint32_t ngx_bbr_loss_timer_win_size_ms = 3000;
 /* Minimum packets that need to ensure ack if there is delayed ack */
 const uint32_t ngx_bbr_min_cwnd = 4 * NGX_BBR_MAX_DATAGRAMSIZE;
 
@@ -54,14 +51,14 @@ const float ngx_bbr_fullbw_thresh = 1.25;
 /* After 3 rounds bandwidth less than (1.25x), estimate the pipe is full */
 const uint32_t ngx_bbr_fullbw_cnt = 3;
 const uint32_t ngx_bbr_probertt_win_size_ms = 10000;
-const uint32_t ngx_bbr_loss_timer_win_size_ms = 5000;
 
 const float ngx_bbr_probe_rtt_gain = 0;
 const float ngx_bbr_rttvar_cwnd_gain = 0;
-const float ngx_bbr_extra_ack_gain = 0;
+const int ngx_bbr_extra_ack_gain = 0;
 const float ngx_bbr_max_extra_ack_time = 0.1;
 const uint32_t ngx_bbr_ack_epoch_acked_reset_thresh = 1 << 20;
 const uint32_t ngx_bbr2_probertt_win_size_ms = 2500;
+
 
 //BBR-S
  int bw[1010], tot;
@@ -151,11 +148,7 @@ ngx_bbr_init(ngx_bbr_t *bbr, ngx_sample_t *sampler)
 ngx_msec_t b3r_timer;
 int gum = 50;
 
-int rtt_cnt = 0;
-int down_cnt = 0;
 int bw_cnt = 0;
-bool c_cwnd;
-ngx_msec_t start_time;
 ngx_msec_t score_time;
 
 static uint32_t 
@@ -164,16 +157,8 @@ ngx_bbr_max_bw(ngx_bbr_t *bbr)
     if (ngx_strcmp(ngx_cong, "BBR-S") == 0 && flag) {
         return bbr->bw;
     }
-    //uint32_t backup = bbr->bw;
-    if (ngx_win_filter_get(&bbr->bandwidth) < bbr->bw) {
-        timer = ngx_current_msec;
-    }
     bbr->bw = ngx_win_filter_get(&bbr->bandwidth);
-    // if (bbr->bw < backup) {
-    //     c_cwnd = true;
-    //     start_time = ngx_current_msec;
-    // }
-    // rate = bbr->bw;
+
     return bbr->bw;
 }
 
@@ -250,6 +235,15 @@ ngx_bbr_bdp(ngx_bbr_t *bbr)
     return ngx_max(bbr->min_rtt,1) * ngx_win_filter_get(&bbr->bandwidth) / MSEC2SEC;
 }
 
+uint32_t ngx_bbr_quantum(ngx_bbr_t *bbr) {
+    if (bbr->pacing_rate < 1.2 * 1024 * 1024 / 8)
+        return 1 * NGX_BBR_MAX_DATAGRAMSIZE;
+    else if (bbr->pacing_rate < 24 * 1024 * 1024 / 8)
+        return 2 * NGX_BBR_MAX_DATAGRAMSIZE;
+    else
+        return ngx_min(bbr->pacing_rate * 1 / 1000, 64 * 1024);
+}
+
 
 static uint32_t 
 ngx_bbr_target_cwnd(ngx_bbr_t *bbr, float gain)
@@ -257,6 +251,7 @@ ngx_bbr_target_cwnd(ngx_bbr_t *bbr, float gain)
     if (bbr->min_rtt == NGX_BBR_INF) {
         return bbr->initial_congestion_window;
     }
+    
     uint32_t cwnd = gain * ngx_bbr_bdp(bbr);
     return ngx_max(cwnd, NGX_BBR_MIN_WINDOW);
 }
@@ -298,35 +293,12 @@ ngx_bbr_update_bandwidth(ngx_bbr_t *bbr, ngx_sample_t *sampler, ngx_quic_congest
     uint32_t bandwidth;
     /* Calculate the new bandwidth, bytes per second */
     bandwidth = 1.0 * sampler->delivered / sampler->interval * MSEC2SEC;
-    if (!sampler->is_app_limited && bbr->mode == BBR_PROBE_BW) {
-        if (bbr->mode == BBR_PROBE_BW && bandwidth < bbr->bw * 0.9) {
-            down_cnt++;
-        } else {
-            down_cnt = 0;
-        }
-        //printf("%d\n", down_cnt);
-        
-    }
-    if (down_cnt > 30 /* || ngx_current_msec - start_time > 10 * bbr->min_rtt*/) {
-            c_cwnd = true;
-            start_time = ngx_current_msec;
-            //printf("%d\n", down_cnt);
-        }
-    if (bandwidth >= ngx_bbr_max_bw(bbr)) {
-        c_cwnd = false;
-    }
-    //    printf("%d,%d, %f\n",bandwidth, bbr->bw, bandwidth * 1.0 / bbr->bw);
 
-    // if (sampler->is_app_limited) {
-    //     printf("app_limited\n");
-    // }
-
-    //printf("%f %d\n", bbr->pacing_gain, bandwidth);
     if (!sampler->is_app_limited && bbr->mode == BBR_PROBE_BW) {
         bbr->max_down[bw_cnt] = bandwidth;
         bw_cnt++;
         bw_cnt = bw_cnt % 30;
-        if (bandwidth < (bbr->bw / 0.75)) {
+        if (bandwidth < (bbr->bw * 0.75)) {
             bbr->bw_down_cnt++;
         }
         else 
@@ -344,7 +316,7 @@ ngx_bbr_update_bandwidth(ngx_bbr_t *bbr, ngx_sample_t *sampler, ngx_quic_congest
         fprintf(r_fp, "%ld,%d,%d,%.5f,%ld,%ld,%.5f,%ld\n",ngx_current_msec - cg->start_time, bandwidth * 8, ngx_bbr_max_bw(bbr), bandwidth * 1.0 / ngx_bbr_max_bw(bbr), sampler->rtt,ngx_min(bbr->min_rtt,sampler->rtt),sampler->rtt * 1.0 / ngx_min(bbr->min_rtt,sampler->rtt),cg->in_flight);
     }
     
-    if (ngx_strcmp(ngx_cong, "BBR-S") == 0 && bbr->mode == BBR_PROBE_BW) {
+    if (ngx_strcmp(ngx_cong, "BBR-S") == 0) {
         if (sampler->is_app_limited && bandwidth < ngx_bbr_max_bw(bbr)) return;
         bw[tot] = bandwidth;
         tot++;
@@ -382,10 +354,6 @@ ngx_bbr_is_next_cycle_phase(ngx_bbr_t *bbr, ngx_sample_t *sampler)
             && (sampler->loss 
                 || inflight >= ngx_bbr_target_cwnd(bbr, bbr->pacing_gain));
     }
-    // if (bbr->pacing_gain > 1.0) {
-    //     should_advance_gain_cycling = is_full_length 
-    //             || inflight >= ngx_bbr_target_cwnd(bbr, bbr->pacing_gain);
-    // }
     /* Drain to target: 1xBDP */
     if (bbr->pacing_gain < 1.0) {
             should_advance_gain_cycling = is_full_length 
@@ -424,13 +392,13 @@ ngx_bbr_check_full_bw_reached(ngx_bbr_t *bbr, ngx_sample_t *sampler, ngx_quic_co
      */
     if (!bbr->round_start || bbr->full_bandwidth_reached 
         || sampler->is_app_limited)
-    {
+    {   
         return;
     }
-    if (cg->resend_s * 100.0 / ngx_max(cg->send_s,1) > 20) {
-        bbr->full_bandwidth_reached = true;
-    }
-
+    // if (cg->resend_s * 100.0 / ngx_max(cg->send_s,1) > 20) {
+    //     bbr->full_bandwidth_reached = true;
+    // }
+    
     uint32_t bw_thresh = bbr->last_bandwidth * ngx_bbr_fullbw_thresh;
     if (ngx_bbr_max_bw(bbr) >= bw_thresh) {
         bbr->last_bandwidth = ngx_bbr_max_bw(bbr);
@@ -452,7 +420,6 @@ ngx_bbr_enter_drain(ngx_bbr_t *bbr)
 static void 
 ngx_bbr_enter_probe_bw(ngx_bbr_t *bbr, ngx_sample_t *sampler)
 {
-    //printf("---------------------\n");
     bbr->mode = BBR_PROBE_BW;
     bbr->cwnd_gain = ngx_bbr_cwnd_gain;
     bbr->cycle_idx = ngx_random() % (NGX_BBR_CYCLE_LENGTH - 1);
@@ -523,7 +490,6 @@ ngx_bbr_check_probe_rtt_done(ngx_bbr_t *bbr, ngx_sample_t *sampler)
     bbr->min_rtt_stamp = sampler->now;
     ngx_bbr_restore_cwnd(bbr);
     ngx_bbr_exit_probe_rtt(bbr, sampler);
-    //printf("Exit probe_RTT: %ld\n", ngx_current_msec);
 }
 
 static uint32_t 
@@ -588,9 +554,6 @@ _ngx_bbr_set_pacing_rate_helper(ngx_bbr_t *bbr, float pacing_gain)
 {
     uint32_t bandwidth, rate;
     bandwidth = ngx_bbr_max_bw(bbr);
-    // if (pacing_gain < 1.25 && (bbr->cc_mode == BBR_RECOVERY_CC || bbr->cc_mode == BBR_IN_CC)) {
-    //     pacing_gain = 0.65;
-    // }
     rate = bandwidth * pacing_gain;
     if (bbr->full_bandwidth_reached || rate > bbr->pacing_rate) {
         bbr->pacing_rate = rate;
@@ -604,27 +567,6 @@ ngx_bbr_set_pacing_rate(ngx_bbr_t *bbr, ngx_sample_t *sampler)
         ngx_bbr_init_pacing_rate(bbr, sampler);
     }
     _ngx_bbr_set_pacing_rate_helper(bbr, bbr->pacing_gain);
-
-    // if (USE_LOSS_FILTER) {
-        
-    //     if (bbr->mode == BBR_PROBE_BW && bbr->pacing_gain == 1) {
-    //         //bbr->pacing_rate *= (0.01 * bbr->loss_filter.rank);
-
-    //         float f = (1 - 10 * bbr->loss_filter.loss_now) * (1 - 10 * bbr->loss_filter.loss_now);
-    //         if (bbr->loss_filter.loss_now > 0.1) {
-    //             f = 0;
-    //         }
-    //         bbr->pacing_rate = bbr->pacing_rate * f + bbr->pacing_rate * (1 - f) * (0.01 * bbr->loss_filter.rank);
-    //     }
-    //     // extern int buffer;
-    //     // if (size <= 0 || buffer == 0) {
-    //     //     return;
-    //     // }
-    //     // u_int64_t min_rate = (u_int64_t)(((u_int64_t)(((u_int64_t)(size * 1.0 / buffer)) + 999) * 1.0) / 1000);
-    //     // //printf("%d, %d, %ld\n", size, buffer, min_rate);
-    //     // bbr->pacing_rate = mymax(bbr->pacing_rate, min_rate);
-    //     // bbr->pacing_rate = mymin(bbr->pacing_rate, bbr->bw * bbr->pacing_gain);
-    // }
 
     if (bbr->pacing_rate == 0) {
         ngx_bbr_init_pacing_rate(bbr, sampler);
@@ -708,14 +650,22 @@ ngx_bbr_compensate_cwnd_for_rttvar(ngx_bbr_t *bbr, ngx_sample_t *sampler)
 static void 
 ngx_bbr_set_cwnd(ngx_bbr_t *bbr, ngx_sample_t *sampler, ngx_quic_congestion_t *cg)
 {
+    // printf("%.2f\n", bbr->cwnd_gain);
     if (sampler->acked != 0) {
-
         uint32_t target_cwnd, extra_cwnd, rttvar_cwnd;
-        target_cwnd = ngx_bbr_target_cwnd(bbr, bbr->cwnd_gain);
+        float gain = bbr->cwnd_gain;
+        if (ngx_strcmp(ngx_cong, "oBBR") == 0 && bbr->pacing_gain > 1) {
+            gain = ngx_max(1.25, gain);
+            if (ngx_current_msec - bbr->loss_timer > ngx_bbr_loss_timer_win_size_ms) {
+                gain = ngx_max(max_ngx_bbr_cwnd_gain, gain);
+            }
+        }
+        target_cwnd = ngx_bbr_target_cwnd(bbr, gain);
         extra_cwnd = ngx_bbr_ack_aggregation_cwnd(bbr);
         rttvar_cwnd = ngx_bbr_compensate_cwnd_for_rttvar(bbr, sampler);
         target_cwnd += extra_cwnd;
-        rttvar_cwnd += rttvar_cwnd;
+        target_cwnd += rttvar_cwnd;
+        target_cwnd += 3 * ngx_bbr_quantum(bbr);
 
         ngx_bbr_modulate_cwnd_for_recovery(bbr, sampler, cg);
         if (!bbr->packet_conservation) {
@@ -731,9 +681,9 @@ ngx_bbr_set_cwnd(ngx_bbr_t *bbr, ngx_sample_t *sampler, ngx_quic_congestion_t *c
                 bbr->congestion_window += sampler->acked;
             }
         }
-        // if(ngx_strcmp(ngx_cong, "oBBR") == 0 && bbr->cwnd_gain < 1.999) {
-        //     bbr->congestion_window = ngx_min(bbr->congestion_window, ngx_bbr_target_cwnd(bbr, bbr->cwnd_gain));
-        // }
+        if(ngx_strcmp(ngx_cong, "oBBR") == 0 && bbr->cwnd_gain < max_ngx_bbr_cwnd_gain) {
+            bbr->congestion_window = ngx_min(bbr->congestion_window, ngx_bbr_target_cwnd(bbr, gain));
+        }
         bbr->congestion_window = ngx_max(bbr->congestion_window, ngx_bbr_min_cwnd);  
     }
     if (bbr->mode == BBR_PROBE_RTT) {
@@ -754,6 +704,7 @@ ngx_bbr_on_lost(ngx_bbr_t *bbr, ngx_msec_t lost_sent_time)
      */
     ngx_bbr_save_cwnd(bbr);
     bbr->recovery_start_time = ngx_current_msec;
+    bbr->loss_round_cnt = bbr->round_cnt;
     /* If losses happened, we do not increase cwnd beyond target_cwnd. */
 }
 
@@ -798,77 +749,93 @@ int delivered_c, delivered_pri;
 
 int cc = -1, bw_back, re_timer = -1000000;
 
-//float win_back = -1;
+long long score1, score2;
+long long score3, score4;
+
 void
 ngx_bbr_update_cc_mode(ngx_bbr_t *bbr, ngx_sample_t *sampler, ngx_quic_congestion_t *cg)
 {
-    if (ngx_current_msec - start_time > 1 * bbr->min_rtt) {
-        c_cwnd = false;
-    }
-    if (bbr->mode == BBR_PROBE_BW) {
-        // if (c_cwnd) {
-        //     bbr->cwnd_gain = 2;
-        //     return;
-        // } 
-        // if (win_back > 0) {
-        //     bbr->cwnd_gain = win_back;
-        //     win_back = -1;
-        // } 
-        if (sampler->loss && sampler->rtt > bbr->min_rtt) {
-            if (bbr->min_rtt == 0) 
-                bbr->cwnd_gain = 2.0;
-            else 
-                bbr->cwnd_gain = ngx_min(1 +  BBRU * (sampler->rtt - bbr->min_rtt) / bbr->min_rtt, 2.0);
-            //bbr->cwnd_gain = ngx_max(2 - sampler->rtt * 1.0 / bbr->min_rtt, 0.5);
-            //bbr->cwnd_gain = ngx_max(bbr->cwnd_gain, 1.0);
-            //printf("%.2f\n", bbr->cwnd_gain);
-        } else {
-            bbr->cwnd_gain = ngx_min(bbr->cwnd_gain + ((0.01 * sampler->acked) / (ngx_bbr_target_cwnd(bbr, 1.0))), 2.0);
-        }
-        if (bbr->pacing_gain > 1) {
-            if (ngx_current_msec-bbr->loss_timer > ngx_bbr_loss_timer_win_size_ms)
-                bbr->cwnd_gain = ngx_max(bbr->cwnd_gain, 2);
-            else 
-                bbr->cwnd_gain = ngx_max(bbr->cwnd_gain, 1.25);
-        }
-        //printf("%.3f\n", bbr->cwnd_gain);
-    }
-    if (sampler->rtt > 1.25 * bbr->min_rtt) {
-        rtt_cnt++;
-    } else {
-        rtt_cnt = 0;
+    if (bbr->mode == BBR_STARTUP && sampler->total_loss * 100.0 / sampler->total_acked < 10.0) {
+        return;
     }
 
-     if (sampler->rtt > 2.5 * bbr->min_rtt) {
+    
+    if (sampler->loss && bbr->min_rtt != 0) {
+        float gain = ngx_min(1 +  BBRU * (sampler->rtt - bbr->min_rtt) / bbr->min_rtt, max_ngx_bbr_cwnd_gain);
+        bbr->cwnd_gain = gain; //ngx_min(bbr->cwnd_gain, gain);
+
+    } else if (bbr->recovery_mode == BBR_NOT_IN_RECOVERY) { 
+        bbr->cwnd_gain = ngx_min(bbr->cwnd_gain + ((0.01 * sampler->acked) / (ngx_bbr_target_cwnd(bbr, 1.0))), max_ngx_bbr_cwnd_gain);
+    }
+
+        
+
+    if (sampler->rtt > 2.5 * bbr->min_rtt) {
         bbr->up_rtt++;
     } else {
         bbr->up_rtt = 0;
     }
 
     if (sampler->loss) {
-        //printf("%ld %d\n", bbr->bw_down_cnt, rtt_cnt);
-        if ((((bbr->bw_down_cnt >= 30) 
-        && ngx_current_msec - re_timer > 10 * bbr->min_rtt) || bbr->up_rtt > 30) && cc==-1 ) {
+        if ((bbr->bw_down_cnt >= 30 || bbr->up_rtt > 30) && cc==-1 ) {
             cc = 0;
-            change_sc = true;
-            //bbr->next_round_delivered = sampler->total_acked;
+            change_sc = true; 
         }   
     }
 
-    //printf("%d %f\n", loss_up, bbr->cwnd_gain);
+    if (change_sc) {
+        first_sent = cg->po_sent;
+        first_delivered = cg->delivered;
+        score_time = ngx_current_msec;
+        change_sc = false;
+    }
     
-    // if (sampler->loss) {
-    //     printf("%ld\n", sampler->srtt);
-    // }
+    if (!change_sc && ngx_current_msec - score_time > 200) {
+        int sent = cg->po_sent - first_sent;
+        int delivered = cg->delivered - first_delivered;
+        int unacked = sent - delivered;
+
+        score = delivered - 10 * unacked;
+        if (cc != -1 && cc < 2) {
+            score1 = score2;
+            score2 = score;
+            if (cc == 1) {
+                uint32_t bw_sum = 0, max_bw = 0;
+                for (int i = 0; i < 30; i++) {
+                    bw_sum += bbr->max_down[i];
+                    if (bbr->max_down[i] > max_bw) {
+                        max_bw = bbr->max_down[i];
+                    }
+                }
+                bw_sum /= 30;
+
+                bw_back = bbr->bw;
+                ngx_win_filter_reset(&bbr->bandwidth, bbr->round_cnt, bw_sum);
+                bbr->up_rtt = 0;
+                bbr->bw_down_cnt = 0;    
+            }
+        } else if (cc >= 2){
+            score3 = score4;
+            score4 = score;
+            if (cc == 3) {
+                if (score3 + score4 < score1 + score2 && ngx_current_msec - re_timer > 10 * bbr->min_rtt) {
+                    ngx_win_filter_max(&bbr->bandwidth, ngx_bbr_bw_win_size, 
+                        bbr->round_cnt, bw_back);
+                    re_timer = ngx_current_msec;
+                }
+                cc = -1;
+            }
+        }
+        if (cc != -1) {
+            cc++;
+        }    
+        first_sent = cg->po_sent;
+        first_delivered = cg->delivered;
+        score_time = ngx_current_msec;
+    }
+
     return;
 }
-
-// double sigmoid(double c, double x) {
-//     return 1.0 / (1 + exp(c * x));
-// }
-
-long long score1, score2;
-long long score3, score4;
 
 void 
 ngx_bbr_on_ack(ngx_bbr_t *bbr, ngx_sample_t *sampler, ngx_quic_congestion_t *cg)
@@ -886,70 +853,12 @@ ngx_bbr_on_ack(ngx_bbr_t *bbr, ngx_sample_t *sampler, ngx_quic_congestion_t *cg)
     }
 
     if (ngx_strcmp(ngx_cong, "oBBR") == 0) {
-        if (change_sc) {
-            first_sent = cg->po_sent;
-            first_delivered = cg->delivered;
-            score_time = ngx_current_msec;
-            change_sc = false;
-        }
+        ngx_bbr_update_cc_mode(bbr,sampler, cg);
         
-        if (!change_sc && ngx_current_msec - score_time > 200) {
-            int sent = cg->po_sent - first_sent;
-            int delivered = cg->delivered - first_delivered;
-            int unacked = sent - delivered;
-            //score = delivered - unacked;
-            //double li = unacked * 1.0 / sent;
-            score = delivered - 10 * unacked;
-            if (cc != -1 && cc < 2) {
-                score1 = score2;
-                score2 = score;
-                if (cc == 1) {
-                    uint32_t bw_sum = 0, max_bw = 0;
-                    for (int i = 0; i < 30; i++) {
-                        bw_sum += bbr->max_down[i];
-                        if (bbr->max_down[i] > max_bw) {
-                            max_bw = bbr->max_down[i];
-                        }
-                        //printf("%d ", bbr->max_down[i]);
-                    }
-                    //printf("\n");
-                    bw_sum /= 30;
-
-
-                    bw_back = bbr->bw;
-                    ngx_win_filter_reset(&bbr->bandwidth, bbr->round_cnt, max_bw);
-                    bbr->bw_down_cnt = 0;
-                    rtt_cnt = 0;
-                }
-            } else if (cc >= 2){
-                score3 = score4;
-                score4 = score;
-                if (cc == 3) {
-                    if (score3 + score4 < score1 + score2) {
-                        ngx_win_filter_max(&bbr->bandwidth, ngx_bbr_bw_win_size, 
-                            bbr->round_cnt, bw_back);
-                        re_timer = ngx_current_msec;
-                        // printf("--------------\n");
-                        // printf("%lld %lld %lld %lld\n", score3, score4, score1, score2);
-                    }
-                    //printf("%lld %lld %lld %lld\n", score3, score4, score1, score2);
-                    cc = -1;
-                }
-            }
-            if (cc != -1) {
-                cc++;
-            }
-            //printf("%d %d %d %d %.3lf\n", bbr_flag, score, unacked, delivered, unacked * 1.0 / sent);
-            
-            first_sent = cg->po_sent;
-            first_delivered = cg->delivered;
-            score_time = ngx_current_msec;
-        }
     }
-    /* Update model and state */
-    // if (sampler->loss) {
-    //     printf("%ld\n", sampler->rtt);
-    // }
+
+    
+
     ngx_bbr_update_bandwidth(bbr, sampler,cg);
     ngx_update_ack_aggregation(bbr, sampler);
     ngx_bbr_update_cycle_phase(bbr, sampler);
@@ -958,60 +867,6 @@ ngx_bbr_on_ack(ngx_bbr_t *bbr, ngx_sample_t *sampler, ngx_quic_congestion_t *cg)
     ngx_bbr_update_min_rtt(bbr, sampler, cg);
 
     ngx_bbr_update_recovery_mode(bbr, sampler);
-    if (ngx_strcmp(ngx_cong, "oBBR") == 0) {
-        // if (ngx_current_msec - change_time > 10000 && score) {
-        //     if (bbr_flag == false) {
-        //         _cwnd = bbr->congestion_window;
-        //         _bw = bbr->bw;
-        //     }
-        //     bbr_flag = !bbr_flag;
-        //     score_avg = score_max;
-        //     score_max = 0;
-        //     score = 0;
-        //     change_sc = true;
-        //     delivered_pri = delivered_c;
-        //     delivered_c = 0;
-        //     if (bbr_flag == false) {
-        //         bbr->cwnd_gain = 2;
-        //         bbr->congestion_window =ngx_max(_cwnd, bbr->congestion_window);
-        //         ngx_win_filter_max(&bbr->bandwidth, ngx_bbr_bw_win_size, 
-        //                    bbr->round_cnt, _bw);
-        //     }
-        //     bbr->next_round_delivered = sampler->total_acked;
-        //     change_time = ngx_current_msec;
-        // }
-
-        // if (score) {
-        //     if (score < score_avg) {
-        //         if (bbr_flag == false) {
-        //             _cwnd = bbr->congestion_window;
-        //             _bw = bbr->bw;
-        //         }
-        //         bbr_flag = !bbr_flag;
-        //         score_avg = score_max;
-        //         score_max = 0;
-        //         score = 0;
-        //         change_sc = true;
-        //         delivered_pri = delivered_c;
-        //         delivered_c = 0;
-        //         if (bbr_flag == false) {
-        //             bbr->cwnd_gain = 2;
-        //             bbr->congestion_window =ngx_max(_cwnd, bbr->congestion_window);
-        //             ngx_win_filter_max(&bbr->bandwidth, ngx_bbr_bw_win_size, 
-        //                     bbr->round_cnt, _bw);
-        //         }
-        //         bbr->next_round_delivered = sampler->total_acked;
-        //         change_time = ngx_current_msec;
-        //     }
-        // }
-        //if (bbr_flag || 1) {
-            ngx_bbr_update_cc_mode(bbr,sampler, cg);
-        //}
-        
-    }
-
-    //printf("%d %d %d %d\n", score[0], score[1], score[2], bbr_flag);
-    /* Update control parameter */
     ngx_bbr_set_pacing_rate(bbr, sampler);
     ngx_bbr_set_cwnd(bbr, sampler, cg);
 }
@@ -1019,7 +874,6 @@ ngx_bbr_on_ack(ngx_bbr_t *bbr, ngx_sample_t *sampler, ngx_quic_congestion_t *cg)
 void 
 ngx_bbr_restart_from_idle(ngx_bbr_t *bbr, uint64_t conn_delivered)
 {
-    //printf("restart_from_idle\n");
     uint64_t now = ngx_current_msec;
     bbr->idle_restart = 1;
     ngx_sample_t sampler = {.now = now, .total_acked = conn_delivered};

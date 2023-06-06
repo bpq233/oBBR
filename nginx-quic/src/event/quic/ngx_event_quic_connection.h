@@ -53,7 +53,7 @@ extern double c_gain;
 
 
 
-#define NGX_QUIC_MSS 1500
+#define NGX_QUIC_MSS 1252
 /* RFC 9002, 6.2.2.  Handshakes and New Paths: kInitialRtt */
 #define NGX_QUIC_INITIAL_RTT                 333 /* ms */
 

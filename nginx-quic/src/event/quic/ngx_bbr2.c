@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "ngx_bbr2.h"
 
-#define ngx_BBR2_MAX_DATAGRAM_SIZE 1500
+#define ngx_BBR2_MAX_DATAGRAM_SIZE NGX_QUIC_MSS
 #define ngx_BBR2_MIN_WINDOW (4 * ngx_BBR2_MAX_DATAGRAM_SIZE)
 /* The RECOMMENDED value is the minimum of 10 * kMaxDatagramSize and max(2* kMaxDatagramSize, 14720)). */
 #define ngx_BBR2_INITIAL_WINDOW (32 * ngx_BBR2_MAX_DATAGRAM_SIZE)

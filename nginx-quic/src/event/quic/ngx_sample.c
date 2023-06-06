@@ -136,13 +136,19 @@ ngx_sample_check_app_limited(ngx_connection_t *c, uint32_t len)
         not_cwnd_limited = (cwnd - cg->in_flight) >= NGX_QUIC_MSS; 
     }
 
+    int empty = 1;
+    for (int i = 0; i < NGX_QUIC_SEND_CTX_LAST; i++) {
+        if (!ngx_queue_empty(&qc->send_ctx[i].sending))
+            empty = 0;
+    }
+
     if (not_cwnd_limited    /* We are not limited by CWND. */
-    && len == 0)
+    && len == 0
+    && empty)
     {
         cg->app_limited = (cg->delivered + cg->in_flight) 
             ? (cg->delivered + cg->in_flight) : 1;
         if (cg->app_limited > 0) {
-            //printf("app_limit\n");
         }
         return true;
     }

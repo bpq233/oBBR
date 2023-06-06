@@ -4,7 +4,7 @@
 #include <ngx_event_quic_connection.h>
 
 #define CUBIC_FAST_CONVERGENCE  1
-#define CUBIC_MSS               1460
+#define CUBIC_MSS               NGX_QUIC_MSS
 #define CUBIC_BETA              718     /* 718/1024=0.7 */
 #define CUBIC_BETA_SCALE        1024
 #define CUBIC_C                 410     /* 410/1024=0.4 */
@@ -12,9 +12,9 @@
 #define CUBIC_TIME_SCALE        10u
 #define CUBIC_MAX_SSTHRESH      0xFFFFFFFF
 
-#define CUBIC_MIN_WIN           (10 * CUBIC_MSS)
+#define CUBIC_MIN_WIN           (4 * CUBIC_MSS)
 #define CUBIC_MAX_INIT_WIN      (100 * CUBIC_MSS)
-#define CUBIC_INIT_WIN          (10 * CUBIC_MSS)
+#define CUBIC_INIT_WIN          (32 * CUBIC_MSS)
 #define MICROS_PER_SECOND 1000
 
 #define _min(a, b) ((a) < (b) ? (a) : (b))

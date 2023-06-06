@@ -211,7 +211,7 @@ ngx_quic_create_datagrams(ngx_connection_t *c)
     ngx_pacing_on_timeout(&cg->pacing, c);
 
     
-    while (cg->in_flight < cg->window || ngx_current_msec - cg->cwnd_limit_timer > 200) {
+    while (cg->in_flight < cg->window || ngx_current_msec - cg->cwnd_limit_timer > 1000) {
         cg->cwnd_limit_timer = ngx_current_msec;
         if (!ngx_pacing_can_write(&cg->pacing, 1252, c)) {
             break;

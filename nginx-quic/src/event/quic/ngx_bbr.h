@@ -129,6 +129,8 @@ typedef struct ngx_bbr_s {
     int loss[110];
     int rtt[1100];
 
+    uint32_t               loss_round_cnt;
+
     ngx_bbr_cc_mode        cc_mode;
     ngx_msec_t             cc_start_time;
     ngx_msec_t             probe_rtt;
