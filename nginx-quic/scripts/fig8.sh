@@ -35,7 +35,7 @@ do
     sudo rm $pwd1 > /dev/null 2>&1
     sudo rm $pwd2 > /dev/null 2>&1
 
-    sudo sh -c "exec $script_dir/nets/change.sh 40 10 300 10" &
+    sudo sh -c "exec $script_dir/nets/change.sh 40 10 300 10 100" &
 #    eval ' sudo $script_dir/nets/change.sh' &
     pid1=$!
     pid2=''
