@@ -36,7 +36,7 @@ sudo rm $pwd2 > /dev/null 2>&1
 pid1=''
 pid2=''
 
-sudo sh -c "exec $script_dir/nets/change.sh 20 5 200 12" &
+sudo sh -c "exec $script_dir/nets/change.sh 20 5 200 12 10" &
 pid1=$!
 sudo sh -c "exec ${run_dir}/nginx -C BBR -O $pwd1 -r $pwd2" & 
 pid2=$! 
@@ -57,7 +57,7 @@ sudo rm $pwd2 > /dev/null 2>&1
 pid1=''
 pid2=''
 
-sudo sh -c "exec $script_dir/nets/change.sh 20 2 200 12" &
+sudo sh -c "exec $script_dir/nets/change.sh 20 2 200 12 10" &
 pid1=$!
 sudo sh -c "exec ${run_dir}/nginx -C BBR -O $pwd1 -r $pwd2" & 
 pid2=$! 
@@ -77,7 +77,7 @@ sudo rm $pwd2 > /dev/null 2>&1
 pid1=''
 pid2=''
 
-sudo tc qdisc change dev $dev parent 1:1 handle 10: tbf rate 20Mbit burst 100KB limit 500KB
+sudo tc qdisc change dev $dev parent 1:1 handle 10: tbf rate 20Mbit burst 10KB limit 500KB
 sudo sh -c "exec ${run_dir}/nginx -C BBR -O $pwd1 -r $pwd2" & 
 pid1=$! 
 eval 'sudo timeout ${time}s ${run_dir}/quic_client https://test.bpqiang.cloud/test > /dev/null 2>&1' &
@@ -95,7 +95,7 @@ sudo rm $pwd2 > /dev/null 2>&1
 pid1=''
 pid2=''
 
-sudo sh -c "exec $script_dir/nets/change.sh 20 10 500 30" &
+sudo sh -c "exec $script_dir/nets/change.sh 20 10 500 30 10" &
 pid1=$!
 sudo sh -c "exec ${run_dir}/nginx -C BBR -O $pwd1 -r $pwd2" & 
 pid2=$! 
@@ -116,7 +116,7 @@ sudo rm $pwd2 > /dev/null 2>&1
 pid1=''
 pid2=''
 
-sudo sh -c "exec $script_dir/nets/change.sh 20 5 500 30" &
+sudo sh -c "exec $script_dir/nets/change.sh 20 5 500 30 10" &
 pid1=$!
 sudo sh -c "exec ${run_dir}/nginx -C BBR -O $pwd1 -r $pwd2" & 
 pid2=$! 
