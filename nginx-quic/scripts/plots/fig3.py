@@ -23,7 +23,7 @@ cwnd_gain=['1.0', '1.5', '2.0', '3.0', '4.0']
 cubic={}
 bbr={}
 
-start=0
+start=60
 
 for buf,r in zip(buffer,R):
     if buf == '1600':
